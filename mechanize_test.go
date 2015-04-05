@@ -54,7 +54,7 @@ const (
 	<title>Page1</title>
 </head>
 <body>
-	<form action="/form1" method="POST">
+	<form class="login-form" action="/form1" method="POST">
 		<input type="text" name="username">
 		<input type="password" name="password">
 		<input type="submit" value="Login">
@@ -252,6 +252,12 @@ func TestFormParse(t *testing.T) {
 	}
 
 	f := forms[0]
+	f2 := m.LastResponse().Form("form.login-form")
+	if f != f2 {
+		t.Errorf("Expected from.login-form to be the same as form[0]")
+		return
+	}
+
 	f.SetValue("username", "johndoe")
 	f.SetValue("password", "passw0rd")
 

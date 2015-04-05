@@ -7,6 +7,7 @@ import (
 	"mime"
 	"net/http"
 
+	"github.com/lestrrat/go-mechanize/query"
 	"golang.org/x/net/html"
 )
 
@@ -45,6 +46,17 @@ func (r *Response) Base() string {
 
 func (r *Response) Forms() []*Form {
 	return r.forms
+}
+
+func (r *Response) Form(sel string) *Form {
+	ms := query.CompileQuery(sel)
+	for _, f := range r.forms {
+		nodes := query.MatchNodes(f.Node, ms)
+		if len(nodes) > 0 {
+			return f
+		}
+	}
+	return nil
 }
 
 func (r *Response) RawBody() []byte {
@@ -86,6 +98,8 @@ func (r *Response) parseHTML() error {
 			switch n.Data {
 			case "form":
 				r.forms = append(r.forms, NewForm(r.mechanize, n))
+				//			case "a":
+				//				r.links = append(r.links, NewLink(r.mechanize, n))
 			case "base":
 				for _, attr := range n.Attr {
 					if attr.Key == "href" {

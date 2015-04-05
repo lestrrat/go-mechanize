@@ -12,7 +12,7 @@ type matcher struct {
 	className   string
 }
 
-func compileQuery(q string) []matcher {
+func CompileQuery(q string) []matcher {
 	l := makeLexer(q)
 	go l.Run()
 
@@ -39,7 +39,7 @@ func compileQuery(q string) []matcher {
 	return matchers
 }
 
-func (m matcher) match(n *html.Node) bool {
+func (m matcher) Match(n *html.Node) bool {
 	if n.Type != html.ElementNode {
 		return false
 	}

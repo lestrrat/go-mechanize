@@ -30,25 +30,25 @@ func NewDocument(r io.Reader) (*Document, error) {
 }
 
 func (d *Document) Find(query string) *Selection {
-	ms := compileQuery(query)
+	ms := CompileQuery(query)
 
-	return &Selection{Nodes: find(d.root, ms)}
+	return &Selection{Nodes: MatchNodes(d.root, ms)}
 }
 
-func find(n *html.Node, ms []matcher) []*html.Node {
+func MatchNodes(n *html.Node, ms []matcher) []*html.Node {
 	if len(ms) == 0 {
 		return nil
 	}
 
 	ret := []*html.Node{}
-	if ms[0].match(n) {
+	if ms[0].Match(n) {
 		ms = ms[1:]
 		ret = append(ret, n)
 	}
 
 	if len(ms) > 0 {
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			ret = append(ret, find(c, ms)...)
+			ret = append(ret, MatchNodes(c, ms)...)
 		}
 	}
 
