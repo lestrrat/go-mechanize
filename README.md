@@ -1,6 +1,8 @@
 go-mechanize
 ============
 
+[![Build Status](https://travis-ci.org/lestrrat/go-mechanize.svg?branch=master)](https://travis-ci.org/lestrrat/go-mechanize)
+
 WARNING: EXTREME ALPHA QUALITY CODE
 
 Package mechanize implements Perl5's WWW::Mechanize style HTTP client
@@ -9,3 +11,4 @@ and such.
 
 If you need a working tool right now, please check out [surf](https://github.com/headzoo/surf).
 This library exists because I had some itches that I wanted to scratch.
+
