@@ -48,15 +48,15 @@ func (r *Response) Forms() []*Form {
 	return r.forms
 }
 
-func (r *Response) Form(sel string) *Form {
+func (r *Response) Form(sel string) (*Form, error) {
 	ms := query.CompileQuery(sel)
 	for _, f := range r.forms {
 		nodes := query.MatchNodes(f.Node, ms)
 		if len(nodes) > 0 {
-			return f
+			return f, nil
 		}
 	}
-	return nil
+	return nil, errors.New("specified for not found")
 }
 
 func (r *Response) RawBody() []byte {

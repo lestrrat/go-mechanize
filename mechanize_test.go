@@ -138,7 +138,7 @@ func TestMechanizeGet(t *testing.T) {
 	ts0 := startTestServer(t)
 	defer ts0.Close()
 
-	m := NewMechanize()
+	m := New()
 
 	// First request with absolute URL, and second one with relative.
 	// the second one should inherit the URL from the previous request
@@ -175,7 +175,7 @@ func TestMaxRedirects(t *testing.T) {
 	ts0 := startTestServer(t)
 	defer ts0.Close()
 
-	m := NewMechanize()
+	m := New()
 
 	var err error
 	err = m.Get(ts0.URLFor("/redirect", url.Values{"url": []string{"self"}}))
@@ -206,7 +206,7 @@ func TestCookie(t *testing.T) {
 	ts0 := startTestServer(t)
 	defer ts0.Close()
 
-	m := NewMechanize()
+	m := New()
 
 	v := url.Values{}
 	v.Add("name", "mechanize.cookie")
@@ -237,7 +237,7 @@ func TestFormParse(t *testing.T) {
 	ts0 := startTestServer(t)
 	defer ts0.Close()
 
-	m := NewMechanize()
+	m := New()
 
 	u := ts0.URLFor("/page1", nil)
 	if err := m.Get(u); err != nil {
@@ -252,7 +252,11 @@ func TestFormParse(t *testing.T) {
 	}
 
 	f := forms[0]
-	f2 := m.LastResponse().Form("form.login-form")
+	f2, err := m.LastResponse().Form("form.login-form")
+	if err != nil {
+		t.Errorf("Failed to get form form.login-form: %s", err)
+		return
+	}
 	if f != f2 {
 		t.Errorf("Expected from.login-form to be the same as form[0]")
 		return
