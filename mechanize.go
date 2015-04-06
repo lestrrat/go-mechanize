@@ -27,7 +27,7 @@ type Mechanize struct {
 	SendReferer bool
 }
 
-func NewMechanize() *Mechanize {
+func New() *Mechanize {
 	cjar, err := cookiejar.New(nil)
 	if err != nil {
 		panic(err)
