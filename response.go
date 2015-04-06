@@ -36,6 +36,14 @@ func (r *Response) IsSuccess() bool {
 	return r.StatusCode >= 200 && r.StatusCode < 300
 }
 
+func (r *Response) IsRedirect() bool {
+	return r.StatusCode >= 300 && r.StatusCode < 400
+}
+
+func (r *Response) IsClientError() bool {
+	return r.StatusCode >= 400 && r.StatusCode < 500
+}
+
 func (r *Response) IsError() bool {
 	return r.StatusCode >= 500 && r.StatusCode < 600
 }

@@ -149,7 +149,14 @@ func (f *Form) Submit() error {
 	switch f.enctype {
 	case contentTypeFormUrlEncoded:
 		v, _ := f.FormValues()
-		return f.mechanize.PostForm(f.action, v)
+		if err := f.mechanize.PostForm(f.action, v); err != nil {
+			return err
+		}
+
+		if res := f.mechanize.LastResponse(); !res.IsSuccess() && !res.IsRedirect() {
+			return errors.New("form submission failed")
+		}
+		return nil
 	case contentTypeMultipartFormData:
 		panic("unimplemented")
 	default:
